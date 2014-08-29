@@ -14,7 +14,27 @@ class Cell {
 
     }
 
+
     String toString() {
         return "Cell[$x,$y]"
+    }
+
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (getClass() != o.class) return false
+
+        Cell cell = (Cell) o
+
+        if (x != cell.x) return false
+        if (y != cell.y) return false
+
+        return true
+    }
+
+    int hashCode() {
+        int result
+        result = x
+        result = 31 * result + y
+        return result
     }
 }

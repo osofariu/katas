@@ -7,20 +7,20 @@ class WorldTest {
 
     @Test
     public void newWorldHasNoCells() {
-        assertEquals([], new World().cells)
+        assertEquals([], new World().currentCells)
     }
 
     @Test
     public void afterOneIterationEmptyWorldRemainsEmpty() {
         World newWorld = new World().iterate()
-        assertEquals([], newWorld.cells)
+        assertEquals([], newWorld.currentCells)
     }
 
     @Test
     public void cellWithTwoNeighborsSouthAndWestStaysAliveAfterOneIteration() {
         World world = new World([new Cell(2, 2), new Cell(2, 3), new Cell(1, 2)])
         World newWorld = world.iterate()
-        assertTrue(newWorld.cellAliveAt(2, 2))
+        assertTrue(isAlive(newWorld, 2, 2))
     }
 
 
@@ -28,58 +28,62 @@ class WorldTest {
     public void cellWithTwoNeighborsSouthAndNorthStaysAliveAfterOneIteration() {
         World world = new World([new Cell(2, 2), new Cell(2, 3), new Cell(2, 1)])
         World newWorld = world.iterate()
-        assertTrue(newWorld.cellAliveAt(2, 2))
-    }
+        assertTrue(isAlive(newWorld, 2, 2))    }
 
     @Test
     public void cellWithTwoNeighborsNEAndSWAliveAfterOneIteration() {
         World world = new World([new Cell(1, 1), new Cell(2, 2), new Cell(3, 3)])
         World newWorld = world.iterate()
-        assertTrue(newWorld.cellAliveAt(2, 2))
+        assertTrue(isAlive(newWorld, 2, 2))
     }
 
     @Test
     public void cellWithThreeNeighborsRemainsAliveAfterOneIteration() {
         World world = new World([new Cell(1, 1), new Cell(2, 2), new Cell(3, 3), new Cell(2, 3)])
         World newWorld = world.iterate()
-        assertTrue(newWorld.cellAliveAt(2, 2))
+        assertTrue(isAlive(newWorld, 2, 2))
     }
 
     @Test
     public void cellWithFourNeighborsDiesAfterOneIteration() {
         World world = new World([new Cell(1, 1), new Cell(2, 2), new Cell(3, 3), new Cell(2, 3), new Cell(3, 2)])
         World newWorld = world.iterate()
-        assertFalse(newWorld.cellAliveAt(2, 2))
+        assertFalse(isAlive(newWorld, 2, 2))
     }
 
     @Test
     public void cellWithOneNeighborsDiesAfterOneIteration() {
         World world = new World([new Cell(2, 2), new Cell(2, 3)])
         World newWorld = world.iterate()
-        assertFalse(newWorld.cellAliveAt(2, 2))
+        assertFalse(isAlive(newWorld, 2, 2))
     }
 
     @Test
     public void deadCellWithThreeNeighborsComesAlive() {
         World world = new World([new Cell(1, 1), new Cell(2, 1), new Cell(3, 1)])
         World newWorld = world.iterate()
-        assertTrue(newWorld.cellAliveAt(2, 2))
+        assertTrue(isAlive(newWorld, 2, 2))
     }
 
     @Test
     public void aCellCanOnlyBeResurrectedOnce() {
         World world = new World ([new Cell(2,2), new Cell(3,2), new Cell(3,3) ])
         World newWorld = world.iterate()
-        assertEquals(4, newWorld.cells.size())
+        assertEquals(4, newWorld.currentCells.size())
+    }
+
+    private boolean isAlive(world, x, y) {
+        return world.cellIsAlive(new Cell(x,y))
     }
 }
 
 /*
 
-0 1 2 3 4 5 6  (x)
-1
-2   x x
-3   0 x
+x  0 1 2 3 4 5 6  (x)
+0      o
+1    x x x
+2      o
+3
 4
 5
 6

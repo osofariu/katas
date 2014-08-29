@@ -1,63 +1,66 @@
 package life
 
 class World {
-    def cells
+    def currentCells
 
-    World(cells = []) {
-        this.cells = cells
+    World(currentCells = []) {
+        this.currentCells = currentCells
     }
 
     World iterate() {
-        def newCells = []
-        Set potentialNewLife = []
-        cells.each { Cell cell ->
-            potentialNewLife = (potentialNewLife << getNeighboringLocations(cell)).flatten()
-            if (neighborCount(cell) in 2..3)
-                newCells.add(cell)
+        def nextGenCells = []
+        Set potentialNewCells = []
+        currentCells.each { Cell cell ->
+            potentialNewCells += getNeighboringLocations(cell)
+            def nc = neighborCount(cell)
+            if (nc in 2..3) {
+                nextGenCells.add(cell)
+            }
         }
-        new World((newCells << resurrectWorthyCells(potentialNewLife)).flatten())
+        resurrectWorthyCells(potentialNewCells).each {
+            nextGenCells += it
+        }
+
+        new World(nextGenCells)
     }
 
-    Cell[] resurrectWorthyCells(cellLocations) {
+    Cell[] resurrectWorthyCells(potentialCells) {
         def worthyCells = []
-        cellLocations.each { coordinate ->
-            def x = coordinate.x, y = coordinate.y
-            Cell cell = new Cell(x, y)
-            if (neighborCount(cell) == 3 && !cellAliveAt(coordinate.x, coordinate.y)) {
+        potentialCells.each { cell ->
+            if (neighborCount(cell) == 3 && !cellIsAlive(cell)) {
                 worthyCells.add(cell)
             }
         }
         worthyCells
     }
 
-    boolean cellAliveAt(x, y) {
-        cells.find { it.isAt(x, y) }
-
+    boolean cellIsAlive(cell) {
+        currentCells.find { it.isAt(cell.x, cell.y) }
     }
 
     int neighborCount(Cell cell) {
         def count = 0
-        getNeighboringLocations(cell).each { coordinate ->
-            if (cellAliveAt(coordinate.x, coordinate.y))
+        getNeighboringLocations(cell).each {
+            if (cellIsAlive(it))
                 count++
         }
         count
     }
 
     private static def getNeighboringLocations(Cell cell) {
-        Set neighbors = []
+        def neighbors = []
         def x = cell.x, y = cell.y
 
         for (nx in x - 1..x + 1) {
             for (ny in y - 1..y + 1) {
-                addLocationToList(cell, nx, ny, neighbors)
+                addNeighborCellToList(cell, nx, ny, neighbors)
             }
         }
-        return neighbors
+        neighbors
     }
 
-    private static void addLocationToList(Cell cell, int nx, int ny, Set neighbors) {
-        if (!cell.isAt(nx, ny))
-            neighbors.add([x: nx, y: ny])
+    private static void addNeighborCellToList(Cell cell, int x, int y, neighbors) {
+        if (!cell.isAt(x, y))
+            neighbors.add(new Cell(x, y))
     }
 }
