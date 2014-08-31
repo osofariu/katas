@@ -16,7 +16,7 @@ class Cell {
 
 
     String toString() {
-        return "Cell[$x,$y]"
+        return "new Cell($x,$y)"
     }
 
     boolean equals(o) {
