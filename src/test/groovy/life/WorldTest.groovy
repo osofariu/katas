@@ -1,5 +1,4 @@
 package life
-
 import org.junit.Test
 
 import static org.junit.Assert.*
@@ -65,29 +64,24 @@ class WorldTest {
         World world = new World([new Cell(1, 1), new Cell(2, 1), new Cell(3, 1)])
         World newWorld = world.iterate()
         assertTrue(isAlive(newWorld, 2, 2))
+        assertTrue(isAlive(newWorld, 2, 0))
+    }
+
+    @Test
+    public void deadCellWithFourNeighborsDiesAfterOneIteration() {
+        World world = new World([new Cell(1, 1), new Cell(3, 3), new Cell(2, 3), new Cell(3, 2)])
+        World newWorld = world.iterate()
+        assertFalse(isAlive(newWorld, 2, 2))
     }
 
     @Test
     public void aCellCanOnlyBeResurrectedOnce() {
         World world = new World([new Cell(2, 2), new Cell(3, 2), new Cell(3, 3)])
         World newWorld = world.iterate()
-        assertEquals(4, newWorld.size())
+        assertEquals(new World([new Cell(2,2), new Cell(3,2), new Cell(2,3), new Cell(3,3)]), newWorld)
     }
 
     private static boolean isAlive(world, x, y) {
         return world.cellIsAlive(new Cell(x, y))
     }
 }
-
-/*
-
-x  0 1 2 3 4 5 6  (x)
-0      o
-1    x x x
-2      o
-3
-4
-5
-6
-(y)
- */

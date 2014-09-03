@@ -66,4 +66,19 @@ class World {
         neighborCells.remove(cell)
         neighborCells
     }
+
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (getClass() != o.class) return false
+
+        World world = (World) o
+
+        if (currentCells != world.currentCells) return false
+
+        return true
+    }
+
+    int hashCode() {
+        return (currentCells != null ? currentCells.hashCode() : 0)
+    }
 }

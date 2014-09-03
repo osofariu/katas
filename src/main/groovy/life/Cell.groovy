@@ -9,14 +9,8 @@ class Cell {
         this.y = y
     }
 
-    public boolean isAt(int x, int y) {
-        (this.x == x && this.y == y)
-
-    }
-
-
     String toString() {
-        return "new Cell($x,$y)"
+        return "Cell($x,$y)"
     }
 
     boolean equals(o) {
