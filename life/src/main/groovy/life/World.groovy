@@ -8,7 +8,7 @@ class World {
     }
 
     World iterate() {
-        new World (updateCurrentCells() +  resurrectWorthyCells())
+        new World (updateCurrentCells() + resurrectWorthyCells())
     }
 
     def size() {
