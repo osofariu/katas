@@ -1,5 +1,6 @@
-.gradle/**
-out/**
+**/.DS_Store
+**/.gradle/
+**/out/
 *.iml
 *.ipr
 *.iws
