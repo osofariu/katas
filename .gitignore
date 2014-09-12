@@ -1,5 +1,5 @@
 .gradle/**
 out/**
-life.iml
-life.ipr
-life.iws
+*.iml
+*.ipr
+*.iws

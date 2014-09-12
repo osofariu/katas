@@ -1,0 +1,3 @@
+include 'fizzbuzz'
+include 'life'
+include 'vending'
