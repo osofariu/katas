@@ -1,7 +1,22 @@
 class Game {
-    def cells = []
+    ArrayList<Cell> cells
+
+    Game(cells = []) {
+        this.cells = cells
+    }
 
     Game iterate() {
-        new Game()
+        cells.each { cell ->
+            cell.iterate()
+        }
+
+        new Game(keepAliveCells())
+    }
+
+    def keepAliveCells() {
+        cells.removeAll {
+            it.status == 0
+        }
+        cells
     }
 }

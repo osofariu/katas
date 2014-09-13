@@ -1,22 +1,40 @@
 
 
 class Cell {
-    Status status = Status.ALIVE
-    List<Cell> neighbors
-    def nextStatus = [Status.DEAD, Status.DEAD, Status.ALIVE] as Status[]
 
-    Cell(Cell...cells) {
-          neighbors = Arrays.asList(cells)
+    enum NeighborDirection {
+        N, NE, E, SE, S, SW, W, NW
+    }
+
+    def neighbors = [] as HashMap
+    def status = 0
+
+    def nextStatusLookup = [0, 0, 1]
+
+    Cell() {
+        status = 1
     }
 
     Cell iterate() {
-        updateStatus();
+        status = nextStatusLookup[countAliveNeighbors()]
         this;
     }
 
-    def updateStatus() {
-        status = nextStatus[neighbors.size()]
+
+    int countAliveNeighbors() {
+        def alive = 0
+        neighbors.values().each { cell ->
+            alive += cell.status
+        }
+        alive
     }
 
-    enum Status {DEAD, ALIVE}
+    def setNeighborAliveTo(NeighborDirection neighborDirection, Cell cell) {
+        neighbors.put(neighborDirection, cell)
+    }
+
+    @Override
+    String toString() {
+        "Cell with status: " + status
+    }
 }
