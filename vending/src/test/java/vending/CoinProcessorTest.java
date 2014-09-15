@@ -145,7 +145,7 @@ public class CoinProcessorTest {
     }
 
     private List<Coin> makeCoinListFromNames(String...coinNames) {
-        List<Coin> coins = new ArrayList<>();
+        List<Coin> coins = new ArrayList<Coin>();
         for (String coinName: coinNames) {
             coins.add(currency.getCoinByName(coinName));
         }

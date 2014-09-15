@@ -41,7 +41,7 @@ public class CurrencyTest {
 
 
     private List<Integer> makeValueList(List<Coin> coins) {
-        List<Integer> values = new ArrayList<>();
+        List<Integer> values = new ArrayList<Integer>();
         for (Coin coin : coins) {
             values.add(coin.value());
         }
@@ -49,7 +49,7 @@ public class CurrencyTest {
     }
 
     private List<String> makeDesignationList(List<? extends Coin> coins) {
-        List<String> designations = new ArrayList<>();
+        List<String> designations = new ArrayList<String>();
         for (Coin coin : coins) {
             designations.add(coin.name());
         }

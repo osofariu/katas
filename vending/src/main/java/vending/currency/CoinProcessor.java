@@ -7,7 +7,7 @@ public class CoinProcessor {
 
     private int balance = 0;
     private Currency currency;
-    private List<Coin> coinReturns = new ArrayList<>();
+    private List<Coin> coinReturns = new ArrayList<Coin>();
 
     public CoinProcessor(Currency currency) {
         this.currency = currency;
@@ -47,7 +47,7 @@ public class CoinProcessor {
     }
 
     private List<Coin> makeChange() {
-        List<Coin> listOfChange = new ArrayList<>();
+        List<Coin> listOfChange = new ArrayList<Coin>();
         while (balance > 0) {
             for (Coin currentCoin : currency.allCoins()) {
                 while (balance >= currentCoin.value()) {
@@ -60,7 +60,7 @@ public class CoinProcessor {
     }
 
     private void resetOrder() {
-        coinReturns = new ArrayList<>();
+        coinReturns = new ArrayList<Coin>();
         balance = 0;
     }
 }
