@@ -15,7 +15,7 @@ class Game {
 
     def keepAliveCells() {
         cells.removeAll {
-            it.status == 0
+            it.statusValue == 0
         }
         cells
     }
