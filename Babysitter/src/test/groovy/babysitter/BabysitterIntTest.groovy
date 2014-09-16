@@ -1,17 +1,15 @@
 package babysitter
-
 import org.junit.Test
-import static org.junit.Assert.assertEquals
+import spock.lang.Specification
 
-
-class BabysitterIntTest {
+class BabysitterIntTest extends Specification {
 
     @Test
-    public void whenBabysitterWorksShiftInAllThreePayScalesSheGetsPaidAppropriately() {
-        Job job = new Job()
-        job.work(10, 2, 11)
-        PayCalculator payCalculator = new PayCalculator(job)
+    public void "when babysitter works all payRates the payment gets computed correctly"() {
+        when:
+        Job job = new Job(startTime: 10, endTime: 2, bedTime: 11)
 
-        assertEquals(1 * 12 + 1 * 8 + 2 * 16, payCalculator.calcPayment())
+        then:
+        assert (job.pay() == 1 * 12 + 1 * 8 + 2 * 16)
     }
 }

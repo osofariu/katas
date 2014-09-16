@@ -1,60 +1,73 @@
 package babysitter
+import spock.lang.Specification
 
-import org.junit.Before
-import org.junit.Test
-
-import static org.junit.Assert.assertEquals
-
-
-class JobTest {
+class JobTest extends Specification {
 
     Job subject
 
-    @Before
-    public void setUp() {
+    def setup() {
         subject = new Job()
     }
 
-    @Test
-    public void whenNoHoursAreWorkedBeforeBedtimeTheShiftIsZeroHours() {
-        subject.work(5, 7, 5)
 
-        assertEquals(0, subject.hoursBeforeBed())
+    def "when shift is before bedtime payment gets calculated correctly for hours worked"() {
+        setup:
+        subject.startTime = 8
+        subject.endTime = 10
+        subject.bedTime = 10
+
+        expect:
+        assert subject.pay() == 24
     }
 
-    @Test
-    public void whenEndTimeAfterMidnightIsAdjustedCorrectly() {
-        subject.work(10, 2, 10)
 
-        assertEquals(2, subject.hoursAfterBed())
+    def "when shift is after bedtime payment gets calculated correctly for hours worked"() {
+        setup:
+        subject.startTime = 8
+        subject.endTime = 10
+        subject.bedTime = 8
+
+        expect:
+        assert subject.pay() == 16
     }
 
-    @Test
-    public void whenStartTimeAfterMidnightItIsAdjustedCorrectly() {
-        subject.work(2, 3, 10)
+    def "when shift is after midnight payment gets calculated correctly for hours worked"() {
+        setup:
+        subject.startTime = 12
+        subject.endTime = 3
+        subject.bedTime = 12
 
-        assertEquals(0, subject.hoursAfterBed())
+        expect:
+        assert subject.pay() == 48
     }
 
-    @Test
-    public void whenBedTimeAfterMidnightItIsAdjustedCorrectly() {
-        subject.work(2, 3, 4)
+    def "when shift and bedtime are after midnight payment gets calculated correctly for hours worked"() {
+        setup:
+        subject.startTime = 12
+        subject.endTime = 3
+        subject.bedTime = 3
 
-        assertEquals(1, subject.hoursBeforeBed())
+        expect:
+        assert subject.pay() == 48
     }
 
-    @Test
-    public void whenEndTimeAfterMidnightThatShiftIsCalculated() {
-        subject.work(10, 2, 3)
+    def "when working shift before and after bedtime both pay rates are applied"() {
+        setup:
+        subject.startTime = 6
+        subject.endTime = 9
+        subject.bedTime = 8
 
-        assertEquals(2, subject.hoursAfterMidnight())
+        expect:
+        assert subject.pay() == 32
     }
 
-    @Test
-    public void whenWorkingAfterMidnightThoseHoursAreNotIncludedInHoursAfterBed() {
-        subject.work(10, 2, 11)
+    def "when working shift before, after bedtime, and after midnight all three rates are applied"() {
+        setup:
+        subject.startTime = 9
+        subject.endTime = 1
+        subject.bedTime = 11
 
-        assertEquals(1, subject.hoursAfterBed())
+        expect:
+        assert subject.pay() == 48
     }
-
 }

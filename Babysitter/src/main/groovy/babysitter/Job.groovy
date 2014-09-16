@@ -2,29 +2,35 @@ package babysitter
 
 
 class Job {
-    int startTime
-    int endTime
-    int bedTime
+    def startTime, endTime, bedTime
 
-    def work(int fromTime, int toTime, int bedTime) {
-        this.startTime = adjustForMidnight(fromTime)
-        this.endTime = adjustForMidnight(toTime)
-        this.bedTime = adjustForMidnight(bedTime)
+    def getEndTime() {
+        adjustForMidnight(endTime)
+    }
+
+    def getStartTime() {
+        adjustForMidnight(startTime)
+    }
+
+    def getBedTime() {
+        adjustForMidnight(bedTime)
     }
 
     static int adjustForMidnight(hour) {
         (hour >= 5) ? hour : 12 + hour
     }
 
-    int hoursBeforeBed() {
-        Math.min(endTime, bedTime) - startTime
+    def pay() {
+        makeShifts().inject(0) { acc, shift ->
+            acc + shift.calcHours() * shift.hourlyRate()
+        }
     }
 
-    int hoursAfterBed() {
-        endTime - Math.max(startTime, bedTime) - hoursAfterMidnight()
-    }
-
-    int hoursAfterMidnight() {
-        Math.max(0, endTime - 12) - Math.max(0, startTime - 12)
+    List makeShifts() {
+        def shifts = []
+        shifts.add(new BeforeBedShift(this))
+        shifts.add(new AfterBedShift(this))
+        shifts.add(new AfterMidnightShift(this))
+        shifts
     }
 }
