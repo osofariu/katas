@@ -75,6 +75,22 @@ class ShiftTest extends Specification {
         assert subject.calcHours() == 1
     }
 
+    def "when shift starts after midnight the first two shifts have no hours"() {
+        setup:
+        job.startTime >> 13
+        job.endTime >> 15
+        job.bedTime >> 14
+
+        when:
+        BeforeBedShift beforeBedShift = new BeforeBedShift(job)
+        AfterBedShift afterBedShift = new AfterBedShift(job)
+
+        then:
+        assert afterBedShift.calcHours() == 0
+        assert beforeBedShift.calcHours() == 0
+
+    }
+
     def "hours before bed get paid as 12 dollars hourly rate"() {
         setup:
         subject = new BeforeBedShift(job)

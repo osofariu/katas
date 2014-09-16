@@ -15,6 +15,6 @@ class BeforeBedShift implements Shift {
 
     @Override
     int calcHours() {
-         Math.min(12, Math.min(job.endTime, job.bedTime)) - job.startTime
+         Math.min(12, Math.min(job.endTime, job.bedTime)) - Math.min(12, job.startTime)
     }
 }
