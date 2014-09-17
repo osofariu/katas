@@ -9,14 +9,11 @@ class Game {
         cells.each { cell ->
             cell.iterate()
         }
-
-        new Game(keepAliveCells())
     }
 
-    def keepAliveCells() {
-        cells.removeAll {
-            it.statusValue == 0
+    def countAliveCells() {
+        cells.inject(0) { acc, cell ->
+            acc += cell.statusValue
         }
-        cells
     }
 }

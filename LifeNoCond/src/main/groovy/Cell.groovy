@@ -36,7 +36,7 @@ class Cell {
         alive
     }
 
-    def associate(String direction, Cell cell) {
+    def associate(Cell cell,String direction)  {
         connectWithNeighbors()
         cell.connectWithNeighbors()
         makeAssociationWith(cell, direction)
